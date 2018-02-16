@@ -57,8 +57,8 @@ var issueToSheetRow = function(issue) {
   return {
     'Project': issue.fields.project.key,
     'Key': issue.key,
-    'Summary': issue.fields.summary,
     'Assignee': ((typeof issue.fields.assignee !== "undefined" && issue.fields.assignee !== null ? issue.fields.assignee.name : void 0) || ''),
+    'Summary': issue.fields.summary,
     'Description': issue.fields.description,
     'Status': issue.fields.status.name,
     'Story Points': ((typeof issue.fields.customfield_10004 !== "undefined" && issue.fields.customfield_10004 !== null ? issue.fields.customfield_10004 : void 0) || ''),
