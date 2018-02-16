@@ -52,7 +52,6 @@ var Jira = (function() {
         Logger.log(errorMsg)
         errMessage += "\n       " + error + ":  " + errorMsg + "\n\n"
       }
-
       return callback(errMessage, res);
     }
     var e, jsonResponse, msg;

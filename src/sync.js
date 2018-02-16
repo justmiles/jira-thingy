@@ -1,12 +1,14 @@
 function autoSync() {
   var userProperties = PropertiesService.getUserProperties();
+  var documentProperties = PropertiesService.getDocumentProperties();
   var jira = new Jira();
   jira.username = userProperties.getProperty('username');
   jira.password = userProperties.getProperty('password');
   jira.host = userProperties.getProperty('host');
 
-  jira.advancedSearch('project = PE AND updated >= startOfYear() AND type = Story AND Sprint is not EMPTY', {
-    startAt: 0
+  jira.advancedSearch('project = '+documentProperties.getProperty('Project Key')+' AND type = Story AND updatedDate > startOfYear()', {
+    startAt: 0,
+    maxResults: 1000
   }, function(err, res) {
     if (err) {
       Logger.log(err);
@@ -27,16 +29,23 @@ function autoSync() {
       }
     }
   });
-
 }
 
 var parseSprint = function(customfield_10007) {
   var re = new RegExp(/com.atlassian.greenhopper.service.sprint.Sprint@.*\[id=([0-9]+),rapidViewId=([0-9]+),state=([A-Za-z]+),name=([^,;]+),goal=([^,;]+)?,startDate=([^,;]+),endDate=([^,;]+),completeDate=([^,;]+),sequence=([^\];]+)/);
-  var cf = JSON.stringify(customfield_10007).match(re);
+  var defaultSprintName = documentProperties.getProperty('Project Key') + ' Backlog'
 
+  try {
+    var cf = JSON.stringify(customfield_10007).match(re);
+  } catch(e) {
+    return {
+      name: defaultSprintName
+    }
+  }
+  
   if (!cf) {
     return {
-      name: "unknown"
+      name: defaultSprintName
     }
   }
 

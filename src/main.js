@@ -23,7 +23,7 @@ function doExport() {
 
       })
       jsonToActiveSpreadsheet(res.issues)
-      // TODO: setColumnDataValidation('Business Unit', "'Custom Fields'!B2:B4")
+      // TODO: setColumnDataValidation('Business Unit', "'DataValidation'!B2:B4")
     }
   })
 

@@ -1,6 +1,6 @@
 var getDataValidtionForField = function(field) {
   var ss = SpreadsheetApp.getActiveSpreadsheet()
-  var sheet = ss.getSheetByName('Custom Fields');
+  var sheet = ss.getSheetByName('DataValidation');
   var range = sheet.getRange(1,1,1,sheet.getLastColumn());
   var dataValidationFields = range.getValues()[0]
 
@@ -11,5 +11,4 @@ var getDataValidtionForField = function(field) {
       return SpreadsheetApp.newDataValidation().requireValueInRange(dataValidationRange).build();
     }
   }
-  
 }

@@ -1,11 +1,11 @@
-function addNoteToActiveCell(note) {
+var addNoteToActiveCell = function(note) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet()
   var cell = sheet.getActiveSheet().getRange(1, 1, 1, 1)
   var comments = cell.getComment()
   cell.setComment(note)
 }
 
-function getLastQuery() {
+var getLastQuery = function() {
   var userProperties = PropertiesService.getUserProperties()
   lastquery = userProperties.getProperty('lastquery')
   Logger.log(lastquery)
@@ -16,12 +16,12 @@ function getLastQuery() {
   }
 }
 
-function setLastQuery(query) {
+var setLastQuery = function(query) {
   var userProperties = PropertiesService.getUserProperties()
   userProperties.setProperty('lastquery', query)
 }
 
-function addCustomFields(displayMap, fields) {
+var addCustomFields = function(displayMap, fields) {
   if (displayMap == null) {
     displayMap = {}
   }
@@ -33,7 +33,7 @@ function addCustomFields(displayMap, fields) {
 
   var documentProperties = PropertiesService.getDocumentProperties()
   var ss = SpreadsheetApp.getActiveSpreadsheet()
-  var sheet = ss.getSheetByName('Custom Fields')
+  var sheet = ss.getSheetByName('DataValidation')
   var customFields = []
   for (i = 2, len = sheet.getLastColumn() + 1; i < len; i++) {
     var name = sheet.getRange(1, i).getValues()[0][0]
@@ -58,13 +58,13 @@ function addCustomFields(displayMap, fields) {
 
 }
 
-function setCustomFields() {
+var setCustomFields = function() {
   var documentProperties = PropertiesService.getDocumentProperties()
   documentProperties.setProperty('CUSTOM_FIELD_Business Units', '{"id":"customfield_11300", "type":"object","set":"id","get":"value"}')
   documentProperties.setProperty('CUSTOM_FIELD_Story Points', '{"id":"customfield_10004", "type":"string"}')
 }
 
-function getBusinessUnitId(businessUnit) {
+var getBusinessUnitId = function(businessUnit) {
   units = {
     "AI (Augeo Incent)": "11000",
     "Augeo Digital": "12102",
@@ -83,14 +83,14 @@ function getBusinessUnitId(businessUnit) {
 
 
 
-function jsonToActiveSpreadsheet(jsonData) {
+var jsonToActiveSpreadsheet = function(jsonData) {
   var ss = SpreadsheetApp.getActiveSpreadsheet()
   var sheets = ss.getSheets()
   var sheet = ss.getActiveSheet()
   jsonToSheet(jsonData, sheet)
 }
 
-function jsonToSheet(jsonData, sheet) {
+var jsonToSheet = function(jsonData, sheet) {
   var rows = []
   var header = Object.keys(jsonData[0])
 
@@ -110,7 +110,7 @@ function jsonToSheet(jsonData, sheet) {
   dataRange = sheet.getRange(1, 1, rows.length, header.length)
   dataRange.setValues(rows)
   
-  // Set DataValidation if exists in the sheet "Custom Fields"
+  // Set DataValidation if exists in the sheet "DataValidation"
   for (ind = 0, hLen = header.length; ind < hLen; ind++) {
     headerName = header[ind]
     dataValidation = getDataValidtionForField(headerName)
@@ -121,7 +121,7 @@ function jsonToSheet(jsonData, sheet) {
   }
 }
 
-function activeSpreadsheetToJson() {
+var activeSpreadsheetToJson = function() {
   var ss = SpreadsheetApp.getActiveSpreadsheet()
   var sheets = ss.getSheets()
   var sheet = ss.getActiveSheet()
@@ -147,7 +147,7 @@ var toURL = function(obj) {
   }).join('&')
 }
 
-function showAlert() {
+var showAlert = function() {
   var ui = SpreadsheetApp.getUi() // Same variations.
 
   var result = ui.alert(
@@ -163,4 +163,15 @@ function showAlert() {
     // User clicked "No" or X in the title bar.
     ui.alert('Permission denied.')
   }
+}
+
+var rowToJson = function(sheet, row) {
+  keys = sheet.getRange("A1:I1").getValues()
+  values = sheet.getRange("A"+row+":I"+row+"").getValues()
+  
+  entry = {};
+  for (r = 0; r < keys[0].length; r++) {
+    entry[keys[0][r]] = values[0][r];
+  }
+  return entry
 }
