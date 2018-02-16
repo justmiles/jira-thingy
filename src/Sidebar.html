@@ -1,0 +1,18 @@
+<table>
+  <? for (var i = 0; i < data.sidebarErrors.length; i++) { ?>
+  <tr>
+    <td>Error updating <?= data.sidebarErrors[i] ?></td>
+  </tr>
+  <? } ?>
+</table>
+
+<table>
+  <? for (var i = 0; i < data.sidebarSuccesses.length; i++) { ?>
+  <tr>
+    <td>Successfully updated <?= data.sidebarSuccesses[i] ?></td>
+  </tr>
+  <? } ?>
+</table>
+    
+    
+<input type="button" value="Close" onclick="google.script.host.close()" />
