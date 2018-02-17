@@ -1,4 +1,5 @@
-function autoSync() {
+function syncSprints() {
+  // syncEpics()
   var userProperties = PropertiesService.getUserProperties();
   var documentProperties = PropertiesService.getDocumentProperties();
   var jira = new Jira();

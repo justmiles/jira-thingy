@@ -14,8 +14,11 @@ I use this for sprint planning/review. It's useful to quickly manage Jira with e
           name: "Sheets -> Jira",
           functionName: "doImport"
         },{
-          name: "Sync",
-          functionName: "autoSync"
+          name: "Sync Sprints",
+          functionName: "syncSprints"
+        },{
+          name: "Sync Epics",
+          functionName: "syncEpics"
         },{
           name: "Configure",
           functionName: "setCreds"
@@ -23,11 +26,12 @@ I use this for sprint planning/review. It's useful to quickly manage Jira with e
         ss.addMenu("Jira", menuEntries);
       }
 
-      function doExport() {JiraThingyLib.doExport()}
-      function doImport() {JiraThingyLib.doImport()}
-      function setCreds() {JiraThingyLib.setCreds()}
-      function autoSync() {JiraThingyLib.autoSync()}
-      function mainOnEdit() {JiraThingyLib.mainOnEdit()}
+      function doExport() {     JiraThingyLib.doExport()    }
+      function doImport() {     JiraThingyLib.doImport()    }
+      function setCreds() {     JiraThingyLib.setCreds()    }
+      function syncSprints() {  JiraThingyLib.syncSprints() }
+      function syncEpics() {    JiraThingyLib.syncEpics()   }
+      function mainOnEdit() {   JiraThingyLib.mainOnEdit()  }
 
 1. Add the library `JiraThingyLib`. It's ID is: `1U-1SGmjFqQMGMbcguQgEmnVWqgb6qy9OyNoio7dBC1la2PjlGdhTSLAS`
   - Versions are in sync with the tagged versions on Github. Latest stable version will always be the latest tagged version
