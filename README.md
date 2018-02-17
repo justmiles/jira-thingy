@@ -33,7 +33,7 @@ I use this for sprint planning/review. It's useful to quickly manage Jira with e
       function syncEpics() {    JiraThingyLib.syncEpics()   }
       function mainOnEdit() {   JiraThingyLib.mainOnEdit()  }
 
-1. Add the library `JiraThingyLib`. It's ID is: `1U-1SGmjFqQMGMbcguQgEmnVWqgb6qy9OyNoio7dBC1la2PjlGdhTSLAS`
+1. Add the library `JiraThingyLib`. It's ID is: `1Q0COyCUcQRaV4N90k8DLO3WKsvsOW0eNx90_5F0-M0PtWydpK2tkAf7C`
   - Versions are in sync with the tagged versions on Github. Latest stable version will always be the latest tagged version
 1. Configure Jira by selecting from the menu bar `Jira -> Configure`
 1. Sync your spreadsheet with Jira by selecting `Jira -> Sync`
