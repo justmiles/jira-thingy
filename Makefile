@@ -12,4 +12,4 @@ build: buildDeps
 	rsync -rv --exclude=*.coffee src/* build 
 
 watch:
-	inotifywait -r -m -e modify `pwd`/src | while read path _ file; do make upload; done
+	inotifywait -r -m -e modify `pwd`/src | while read path _ file; do rm -rf build && make upload; done
