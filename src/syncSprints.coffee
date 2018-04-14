@@ -1,8 +1,9 @@
-parseSprint = (customfield_10007) ->
+parseSprint = (sprintField) ->
+  documentProperties = PropertiesService.getDocumentProperties()
   re = new RegExp(/com.atlassian.greenhopper.service.sprint.Sprint@.*\[id=([0-9]+),rapidViewId=([0-9]+),state=([A-Za-z]+),name=([^,;]+),goal=([^,;]+)?,startDate=([^,;]+),endDate=([^,;]+),completeDate=([^,;]+),sequence=([^\];]+)/)
   defaultSprintName = documentProperties.getProperty('Project Key') + ' Backlog'
   try
-    cf = JSON.stringify(customfield_10007).match(re)
+    cf = JSON.stringify(sprintField).match(re)
   catch e
     return { name: defaultSprintName }
   if !cf
@@ -20,17 +21,28 @@ parseSprint = (customfield_10007) ->
   }
 
 issueToSheetRow = (issue) ->
-  {
+  documentProperties = PropertiesService.getDocumentProperties()
+
+  row = {
     'Project': issue.fields.project.key
     'Key': issue.key
     'Assignee': (if typeof issue.fields.assignee != 'undefined' and issue.fields.assignee != null then issue.fields.assignee.name else undefined) or ''
     'Summary': issue.fields.summary
     'Description': issue.fields.description
     'Status': issue.fields.status.name
-    'Story Points': (if typeof issue.fields.customfield_10004 != 'undefined' and issue.fields.customfield_10004 != null then issue.fields.customfield_10004 else undefined) or ''
-    'Business Unit': (if issue.fields.customfield_11300 != null then issue.fields['customfield_11300'][0].value else undefined) or ''
     'Priority': issue.fields.priority.name
   }
+
+  for customField in ['Story Points', 'Business Unit']
+    customFieldId = documentProperties.getProperty customField
+    if customFieldId?
+      if issue.fields[customFieldId]?
+        if customField == 'Business Unit'
+          row[customField] = issue.fields[customFieldId][0].value
+        else
+          row[customField] = issue.fields[customFieldId]
+  
+  return row
 
 getOrCreateSheet = (sheetName) ->
   ss = SpreadsheetApp.getActiveSpreadsheet()
@@ -58,7 +70,7 @@ syncSprints = ->
     else
       sprints = {}
       res.issues.map (issue) ->
-        sprint = parseSprint(issue.fields.customfield_10007[0])
+        sprint = parseSprint(issue.fields[documentProperties.getProperty('Sprint Field')][0])
         if !sprints[sprint.name]
           sprints[sprint.name] = []
         sprints[sprint.name].push issueToSheetRow(issue)
